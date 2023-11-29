@@ -6,7 +6,7 @@ from torch.utils.data import ConcatDataset, DataLoader, Dataset, random_split
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
 
-
+IMG_SIZE = 32
 class MNISTDataModule(LightningDataModule):
     """`LightningDataModule` for the MNIST dataset.
 
@@ -76,7 +76,9 @@ class MNISTDataModule(LightningDataModule):
 
         # data transformations
         self.transforms = transforms.Compose(
-            [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
+            [transforms.ToTensor(), 
+             transforms.Resize((IMG_SIZE, IMG_SIZE)),
+             transforms.Lambda(lambda t: (t * 2) - 1)]
         )
 
         self.data_train: Optional[Dataset] = None

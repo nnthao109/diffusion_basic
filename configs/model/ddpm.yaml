@@ -1,0 +1,26 @@
+_target_: src.models.diffusion_module.DiffusionModule
+
+net:
+  _target_: src.models.components.Diffusion.diffusion.DiffusionModel
+  denoise_net : 
+    _target_: src.models.components.Unet.simple_unet.SimpleUnet
+  beta_start : 0.0001
+  beta_end : 0.02
+  time_steps : 1000
+  img_dims: [1, 32, 32]
+  
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 0.0
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.1
+  patience: 10
+
+compile: false
